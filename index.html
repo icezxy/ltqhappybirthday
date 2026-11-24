@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="forest">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0e2418" id="metaThemeColor" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="description" content="刘天勤 22 岁生日纪念页：绿色系信笺、生日蛋糕、烟花与一封写给你的信。" />
+<title>刘天勤 · 22 岁生日快乐 | Happy 22nd Birthday</title>
+
+<!-- 字体：优雅衬线 + 中文宋体感。CDN 不可用时自动回落到系统字体，不影响排版 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230e2418'/%3E%3Cpath d='M32 13c9.5 6.4 14 13.6 14 21a14 14 0 0 1-28 0c0-7.4 4.5-14.6 14-21z' fill='%23a9c6a0'/%3E%3Cpath d='M32 22v26' stroke='%230e2418' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+
+<body data-theme="forest">
+
+<!-- ======================= 背景：双层渐变 + 粒子 + 噪点 ======================= -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-layer bg-forest"></div>
+  <div class="bg-layer bg-matcha"></div>
+  <canvas id="bg-canvas"></canvas>
+  <div class="bg-grain"></div>
+  <div class="bg-vignette"></div>
+</div>
+
+<!-- 烟花 / 彩带专用画布 -->
+<canvas id="fx-canvas" aria-hidden="true"></canvas>
+
+<!-- ======================= 顶部导航 ======================= -->
+<header class="topbar">
+  <a class="brand" href="#hero">
+    <span class="brand-mark">✿</span>
+    <span class="brand-text">L.T.Q<em>22</em></span>
+  </a>
+  <div class="topbar-actions">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换绿色主题">
+      <span class="theme-icons"><span class="t-icon">☾</span><span class="t-icon">☀</span></span>
+      <span class="theme-label" id="themeLabel">森系暮光</span>
+    </button>
+    <a class="top-link" href="#wishes">留下祝福</a>
+  </div>
+</header>
+
+<main>
+  <!-- ======================= Hero ======================= -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <p class="eyebrow hero-eyebrow">HAPPY 22<sup>nd</sup> BIRTHDAY · 2004 — 2026</p>
+
+      <h1 class="hero-title">
+        <span class="hero-line">刘天勤，</span>
+        <span class="hero-line hero-line-2"><span class="num">22</span> 岁<span class="hero-cn">生日快乐</span></span>
+      </h1>
+
+      <p class="hero-en">Happy 22nd Birthday, Liu Tianqin.</p>
+      <p class="hero-note" id="heroNote" aria-live="polite"></p>
+
+      <div class="counter" aria-label="出生至今的时光计数器">
+        <div class="counter-item"><b id="cdDays">0000</b><i>天</i></div>
+        <span class="counter-sep">:</span>
+        <div class="counter-item"><b id="cdHours">00</b><i>时</i></div>
+        <span class="counter-sep">:</span>
+        <div class="counter-item"><b id="cdMins">00</b><i>分</i></div>
+        <span class="counter-sep">:</span>
+        <div class="counter-item"><b id="cdSecs">00</b><i>秒</i></div>
+      </div>
+      <p class="counter-caption">
+        自你来到这个世界，时间已经温柔地走了这么久 · 距离下一个生日 <span id="nextBday">—</span>
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="openLetterBtn" type="button">
+          <span>✉️ 拆开我写给你的信</span>
+        </button>
+        <a class="btn btn-ghost" href="#cake">🕯️ 去吹蜡烛许愿</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span>SCROLL</span><i></i></div>
+    <div class="hero-leaf leaf-l" aria-hidden="true"></div>
+    <div class="hero-leaf leaf-r" aria-hidden="true"></div>
+  </section>
+
+  <!-- ======================= 蛋糕 & 许愿 ======================= -->
+  <section class="section cake-section" id="cake">
+    <div class="section-head">
+      <p class="eyebrow">MAKE A WISH</p>
+      <h2>把 22 岁的愿望，吹进烛火里</h2>
+      <p class="section-sub">
+        轻点任意一根蜡烛，或按下“吹灭蜡烛”；也可以允许麦克风，真的吹一口气。
+      </p>
+    </div>
+
+    <div class="cake-stage">
+      <div class="cake-glow" aria-hidden="true"></div>
+      <div class="cake" id="cakeEl">
+        <div class="candle-row" id="candles">
+          <button class="candle c1" type="button" aria-label="第一根蜡烛"><span class="flame"></span><span class="glow"></span></button>
+          <button class="candle c2" type="button" aria-label="第二根蜡烛"><span class="flame"></span><span class="glow"></span></button>
+          <button class="candle c3" type="button" aria-label="第三根蜡烛"><span class="flame"></span><span class="glow"></span></button>
+        </div>
+
+        <div class="cake-body">
+          <div class="tier tier-top"><span class="tier-icing"></span><span class="cake-num">22</span></div>
+          <div class="tier tier-mid"><span class="tier-icing"></span></div>
+          <div class="tier tier-bot"><span class="tier-icing"></span></div>
+        </div>
+
+        <div class="cake-plate" aria-hidden="true"><span></span></div>
+        <span class="cake-sprig sprig-a" aria-hidden="true"></span>
+        <span class="cake-sprig sprig-b" aria-hidden="true"></span>
+      </div>
+      <div class="smoke-layer" id="smokeLayer" aria-hidden="true"></div>
+    </div>
+
+    <div class="cake-controls">
+      <button class="btn btn-primary" id="blowBtn" type="button">🫧 吹灭蜡烛</button>
+      <button class="btn btn-ghost" id="micBtn" type="button">🎙️ 用麦克风吹气</button>
+      <span class="mic-meter" id="micMeter" aria-hidden="true"><i></i></span>
+    </div>
+    <p class="cake-status" id="cakeStatus">三根蜡烛正安静地亮着。</p>
+  </section>
+
+  <!-- ======================= 拍立得画廊 ======================= -->
+  <section class="section gallery-section" id="gallery">
+    <div class="section-head">
+      <p class="eyebrow">POLAROID MEMORIES</p>
+      <h2>八个被定格的瞬间</h2>
+      <p class="section-sub">演唱会的光、自习室的下午、青海湖的风，还有那条记录《我的完美葬礼》的朋友圈。<br>点开任意一张，看看那天的故事。</p>
+    </div>
+    <div class="gallery" id="galleryGrid"></div>
+  </section>
+
+  <!-- ======================= 默契问答 ======================= -->
+  <section class="section quiz-section" id="quiz">
+    <div class="section-head">
+      <p class="eyebrow">SECRET TEST</p>
+      <h2>关于刘天勤的四道灵魂问答</h2>
+      <p class="section-sub">没有标准答案，选哪个都会被温柔回应。全部答完，会解锁一张隐藏祝福卡。</p>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="quiz-progress"><span id="quizBar"></span></div>
+      <div class="quiz-body" id="quizBody"></div>
+      <div class="quiz-foot">
+        <span id="quizStep">第 1 / 3 题</span>
+        <button class="link-btn" id="quizReset" type="button">重来一次</button>
+      </div>
+    </div>
+
+    <div class="quiz-reward" id="quizReward" hidden>
+      <p class="eyebrow">UNLOCKED</p>
+      <h3>默契达成 · 隐藏祝福卡</h3>
+      <p id="quizRewardText"></p>
+      <button class="btn btn-ghost" id="quizRewardBtn" type="button">收下祝福 🌿</button>
+    </div>
+  </section>
+
+  <!-- ======================= 祝福弹幕墙 ======================= -->
+  <section class="section wishes-section" id="wishes">
+    <div class="section-head">
+      <p class="eyebrow">WISHES WALL</p>
+      <h2>让祝福从屏幕上方飞过去</h2>
+      <p class="section-sub">写下的祝福会立刻变成一条弹幕，并保存在这台设备的浏览器里。</p>
+    </div>
+
+    <div class="wishes-toolbar">
+      <label class="switch">
+        <input type="checkbox" id="danmakuToggle" checked />
+        <span class="switch-track"><span class="switch-dot"></span></span>
+        <span class="switch-text">弹幕</span>
+      </label>
+
+      <label class="opacity-control">
+        <span>透明度</span>
+        <input type="range" id="danmakuOpacity" min="20" max="100" value="80" />
+        <b id="danmakuOpacityVal">80%</b>
+      </label>
+
+      <button class="btn btn-primary btn-fire" id="fireworksBtn" type="button">🎆 放一场生日烟花</button>
+    </div>
+
+    <form class="wish-form" id="wishForm" autocomplete="off">
+      <div class="wish-form-row">
+        <input class="input" id="wishName" maxlength="12" placeholder="你的昵称（可不填）" aria-label="昵称" />
+        <div class="color-picker" id="colorPicker" role="radiogroup" aria-label="弹幕颜色"></div>
+      </div>
+      <div class="wish-form-row">
+        <input class="input input-grow" id="wishText" maxlength="40" placeholder="写一句给天勤的祝福…" aria-label="祝福内容" required />
+        <button class="btn btn-primary" type="submit">发送弹幕</button>
+      </div>
+    </form>
+
+    <p class="wishes-tip">小提示：点击页面空白处，也会有一朵小烟花在指尖绽开。</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-mark">✿</div>
+  <p>Made with greens &amp; light · 只为刘天勤的 22 岁</p>
+</footer>
+
+<!-- ======================= 弹幕层 ======================= -->
+<div class="danmaku-layer" id="danmakuLayer" aria-hidden="true"></div>
+
+<!-- ======================= 开场：火漆信封 ======================= -->
+<div class="envelope-screen" id="envelopeScreen">
+  <div class="env-stars" aria-hidden="true"></div>
+  <div class="env-glow" aria-hidden="true"></div>
+  <div class="env-scene">
+    <p class="env-kicker">A LETTER FOR</p>
+
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-letter">
+        <span class="env-letter-line"></span>
+        <span class="env-letter-line"></span>
+        <span class="env-letter-line short"></span>
+        <span class="env-letter-sign">·</span>
+      </div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <button class="wax-seal" id="waxSeal" type="button" aria-label="按下火漆印章，开启这封信">
+        <span class="seal-outer"><span class="seal-inner"><span class="seal-glyph">22</span></span></span>
+      </button>
+    </div>
+
+    <p class="env-to">致 <b>刘天勤</b> · 22 岁生日特别限定</p>
+    <p class="env-hint">轻触火漆印章 · 开启这封信</p>
+  </div>
+</div>
+
+<!-- ======================= 信件弹窗 ======================= -->
+<div class="modal letter-modal" id="letterModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="letter"></div>
+  <article class="letter-paper" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <button class="modal-close" type="button" data-close="letter" aria-label="关闭信件">✕</button>
+    <span class="letter-corner tl" aria-hidden="true"></span>
+    <span class="letter-corner tr" aria-hidden="true"></span>
+    <span class="letter-corner bl" aria-hidden="true"></span>
+    <span class="letter-corner br" aria-hidden="true"></span>
+
+    <header class="letter-head">
+      <p class="eyebrow">A LETTER FOR LIU TIANQIN</p>
+      <h3 id="letterTitle">写给刘天勤的一封信</h3>
+      <p class="letter-date" id="letterDate">2026 年 11 月 24 日</p>
+    </header>
+
+    <div class="letter-body" id="letterBody"></div>
+
+    <div class="letter-foot">
+      <button class="link-btn" id="letterRevealAll" type="button">一键显示全文</button>
+      <button class="btn btn-primary btn-stamp" id="stampBtn" type="button">收下这份心意 · 盖章</button>
+    </div>
+
+    <div class="letter-stamp" id="letterStamp" aria-hidden="true">
+      <span class="stamp-ring"></span>
+      <span class="stamp-text">刘天勤<em>22</em></span>
+    </div>
+  </article>
+</div>
+
+<!-- ======================= 灯箱 ======================= -->
+<div class="modal lightbox" id="lightbox" aria-hidden="true">
+  <div class="modal-backdrop" data-close="lightbox"></div>
+  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="上一张">‹</button>
+  <figure class="lb-figure">
+    <div class="lb-image" id="lbImage"></div>
+    <figcaption class="lb-caption">
+      <p class="lb-meta" id="lbMeta"></p>
+      <h4 id="lbTitle"></h4>
+      <p id="lbDesc"></p>
+      <blockquote class="lb-quote" id="lbQuote" hidden></blockquote>
+      <div class="lb-reply" id="lbReply" hidden>
+        <span class="lb-reply-label">写给你的回复</span>
+        <p id="lbReplyText"></p>
+      </div>
+    </figcaption>
+  </figure>
+  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="下一张">›</button>
+  <button class="modal-close" type="button" data-close="lightbox" aria-label="关闭灯箱">✕</button>
+</div>
+
+<!-- ======================= 幸运签 / 愿望兑换券 ======================= -->
+<div class="modal slip-modal" id="slipModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="slip"></div>
+  <div class="slip" role="dialog" aria-modal="true" aria-labelledby="slipTitle">
+    <button class="modal-close" type="button" data-close="slip" aria-label="关闭">✕</button>
+    <p class="eyebrow">YOUR LUCKY NOTE</p>
+    <h3 id="slipTitle">上上签</h3>
+    <p class="slip-text" id="slipText"></p>
+    <div class="slip-seal" aria-hidden="true">22</div>
+    <button class="btn btn-ghost" id="slipRedraw" type="button">再抽一张</button>
+  </div>
+</div>
+
+<!-- ======================= 音乐胶囊 ======================= -->
+<aside class="music-dock" id="musicDock" aria-label="22 岁专属歌单">
+  <div class="dock-main">
+    <button class="disc" id="discBtn" type="button" aria-label="播放或暂停">
+      <span class="disc-ring"></span>
+      <span class="disc-hole"></span>
+    </button>
+
+    <div class="track">
+      <p class="track-title" id="trackTitle">陶喆 · 22</p>
+      <p class="track-note" id="trackNote">22 岁专属歌单 · 点击播放</p>
+      <div class="eq" id="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="dock-btns">
+      <button class="dock-icon" id="prevBtn" type="button" aria-label="上一首">⏮</button>
+      <button class="dock-icon dock-play" id="playBtn" type="button" aria-label="播放">▶</button>
+      <button class="dock-icon" id="nextBtn" type="button" aria-label="下一首">⏭</button>
+    </div>
+
+    <div class="dock-side">
+      <button class="dock-icon dock-small" id="muteBtn" type="button" aria-label="静音">🔈</button>
+      <input class="vol" id="volumeSlider" type="range" min="0" max="100" value="65" aria-label="音量" />
+      <button class="dock-icon dock-small" id="playlistBtn" type="button" aria-label="打开歌单">☰</button>
+    </div>
+  </div>
+
+  <div class="playlist-panel" id="playlistPanel">
+    <p class="pl-head">刘天勤的22 岁专属歌单</p>
+    <ul class="pl-list" id="playlistList"></ul>
+    <p class="pl-note">找不到音频文件时，会自动用 Web Audio 生成温柔和弦氛围音。</p>
+  </div>
+</aside>
+
+<!-- 右下角常驻信封 -->
+<button class="mail-fab" id="mailFab" type="button" aria-label="打开写给刘天勤的信">
+  <span>✉</span>
+  <b>信</b>
+</button>
+
+<!-- Toast -->
+<div class="toast-layer" id="toastLayer" aria-live="polite"></div>
+
+<noscript>
+  <p style="padding:24px;color:#fff;background:#0e2418;">这个页面需要启用 JavaScript 才能开启信封、播放音乐与放烟花。</p>
+</noscript>
+
+<!-- canvas-confetti 彩带库：CDN 不可用时脚本会自动回落到自带的粒子彩带 -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+<script src="script.js" defer></script>
+</body>
+</html>
