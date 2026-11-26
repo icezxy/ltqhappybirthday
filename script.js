@@ -74,6 +74,12 @@ const CONFIG = {
       artist: "钢琴曲",
       src: "assets/music/卡农.mp3",
       note: "安静时都在听"
+    },
+    {
+      title: "生日快乐",
+      artist: "周璇",
+      src: "assets/music/生日快乐-周璇.mp3",
+      note: "遗憾今年又不能到场，本尊清唱，偷着乐吧你"
     }
   ],
 
